@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+  </head>
+  <body>
+    <h1>This is a CORS request to the Express api running on a server-port</h1>
+    <script charset="utf-8">
+      fetch("http://localhost:5000/users")
+        .then(resp => resp.json())
+        .then(response => {
+          document.body.append(JSON.stringify(response));
+        });
+    </script>
+  </body>
+</html>
