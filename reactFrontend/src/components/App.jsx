@@ -7,7 +7,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      gigolos: []
+      gigolos: [],
+      input: {}
     };
   }
 
@@ -19,6 +20,11 @@ class App extends Component {
         console.log(response);
       });
   };
+
+  // getInput = e => {
+  //   console.log(e.target.value);
+  //   //this.setState({ input:  });
+  // };
 
   // 1. Write response into state
   // 2. Pass this state to form

@@ -2,6 +2,21 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
+const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  host: "gmail",
+  auth: {
+    user: process.env.USERNAME, // generated ethereal user
+    pass: process.env.PASS // generated ethereal password
+  }
+});
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
   console.log("###", req.headers);
@@ -69,7 +84,24 @@ const singleUsersHandler = (req, res) => {
 app.get("/", requestHandler);
 app.get("/users", usersHandler);
 app.get("/users/:id", singleUsersHandler);
-app.post();
+
+app.post("/contact", (req, res) => {
+  let mailOptions = {
+    from: process.env.USERNAME, // sender address
+    to: process.env.USERNAME, // list of receivers
+    subject: req.body.eMail, // Subject line
+    text: JSON.stringify(req.body) // plain text body
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message sent: %s", info.messageId);
+  });
+
+  console.log(req.body);
+  res.send({ success: "Success" });
+});
 
 app.get("/*", (req, res) => {
   console.log(
